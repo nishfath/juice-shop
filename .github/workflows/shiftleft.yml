@@ -20,6 +20,13 @@ jobs:
       uses: actions/setup-java@v1.4.3
       with:
         java-version: 1.8
+   # Workaround: Perform npm install for node 8 and remove node_modules
+    # This is required since package-lock.json is not commited to git
+    - name: Analyze with NG SAST
+      run: |
+        npm install
+        rm -rf node_modules
+        rm -rf frontend/dist frontend/node_modules dist build     
     - name: Extract branch name
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
